@@ -9,23 +9,23 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Configuration
+@Configuration
 public class RestTemplateConfig {
 
-//    @Value("${github.token}")
-//    private String githubToken;
-//
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-//        interceptors.add((request, body, execution) -> {
-//            request.getHeaders().set("Authorization", "token" + githubToken);
-//            return execution.execute(request, body);
-//        });
-//
-//        restTemplate.setInterceptors(interceptors);
-//        return restTemplate;
-//    }
+    @Value("${github.token}")
+    private String githubToken;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        interceptors.add((request, body, execution) -> {
+            request.getHeaders().set("Authorization", "token" + githubToken);
+            return execution.execute(request, body);
+        });
+
+        restTemplate.setInterceptors(interceptors);
+        return restTemplate;
+    }
 }
