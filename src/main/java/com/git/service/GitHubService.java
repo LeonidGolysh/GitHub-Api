@@ -2,18 +2,15 @@ package com.git.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.git.config.RestTemplateConfig;
+import com.git.exception.RepositoryNotFoundException;
+import com.git.exception.UserNotFoundException;
 import com.git.model.Branch;
 import com.git.model.GitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,30 +19,36 @@ public class GitHubService {
     private static final String GH_API_URL = "https://api.github.com";
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplateConfig restTemplateConfig;
 
-    public List<GitRepository> getUserRepo(String username) throws Exception {
+    public List<GitRepository> getUserRepo(String username) {
+        JsonNode response = fetchUserRepos(username);
+        return parseRepos(response);
+    }
+
+    private JsonNode fetchUserRepos(String username) {
         String url = GH_API_URL + "/users/" + username + "/repos";
-
-        JsonNode response;
-
         try {
-            response = restTemplate.getForObject(url, JsonNode.class);
+            return restTemplateConfig.restTemplate().getForObject(url, JsonNode.class);
         } catch (HttpClientErrorException e) {
-            if(e.getStatusCode().value() == 404) {
-                throw new Exception("User not found");
+
+            if (e.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
+                throw new UserNotFoundException("User not found");
             } else {
-                throw new Exception("An error occurred: " + e.getMessage());
+                throw new RuntimeException("An error occurred: " + e.getMessage());
             }
         }
+    }
 
+    private List<GitRepository> parseRepos(JsonNode response) {
         if (response == null) {
-            throw new Exception("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         List<GitRepository> repositories = new ArrayList<>();
         for (JsonNode repoNode : response) {
             if (!repoNode.get("fork").asBoolean()) {
+
                 String repoName = repoNode.get("name").asText();
                 String ownerLogin = repoNode.get("owner").get("login").asText();
 
@@ -57,18 +60,28 @@ public class GitHubService {
         return repositories;
     }
 
-    private List<Branch> getRepoBranches(String ownerLogin, String repoName) throws Exception{
+    private List<Branch> getRepoBranches(String ownerLogin, String repoName) {
+        JsonNode response = fetchRepoBranches(ownerLogin, repoName);
+        return parsBranch(response);
+    }
+
+    private JsonNode fetchRepoBranches(String ownerLogin, String repoName) {
         String url = GH_API_URL + "/repos/" + ownerLogin + "/" + repoName + "/branches";
-        JsonNode response;
-
         try {
-            response = restTemplate.getForObject(url, JsonNode.class);
+            return restTemplateConfig.restTemplate().getForObject(url, JsonNode.class);
         } catch (HttpClientErrorException e) {
-            throw new Exception("Repository not found");
-        }
 
+            if (e.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
+                throw new RepositoryNotFoundException("Repository not found");
+            } else {
+                throw new RuntimeException("An error occurred: " + e.getMessage());
+            }
+        }
+    }
+
+    private List<Branch> parsBranch(JsonNode response) {
         if (response == null) {
-            throw new Exception("Repository not found");
+            throw new RepositoryNotFoundException("Repository not found");
         }
 
         List<Branch> branches = new ArrayList<>();
