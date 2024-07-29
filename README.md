@@ -1,6 +1,7 @@
 # GitHub-Api
 
 This is an application for obtaining information about the user's GitHub repositories using the GitHub API. 
+
 The application provides information about all unfinished user repositories, as well as information about branches and the latest commits in these branches.
 
 ## Requirements
@@ -29,7 +30,8 @@ Retrieving all user repositories:
 
 * **URL:** /api/v1/user/{username}/repos
 * **Method:** GET
-* **Path Options:** `username` - GitHub username
+* **Path Options:**
+  * `username` - GitHub username
 * **Example of a query:**
 > http://localhost:8080/api/v1/user/{username}/repos
 
