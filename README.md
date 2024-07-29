@@ -4,12 +4,14 @@ This is an application for obtaining information about the user's GitHub reposit
 The application provides information about all unfinished user repositories, as well as information about branches and the latest commits in these branches.
 
 ## Requirements
--Java 21
--Spring
--Gradle
--GitHub Personal Access Token
+
+> - Java 21
+> - Spring
+> - Gradle
+> - GitHub Personal Access Token
 
 ## Installation
+
 1. Clone the repository:
    ```sh
    git clone https://github.com/LeonidGolysh/GitHub-Api.git
@@ -20,6 +22,7 @@ The application provides information about all unfinished user repositories, as 
    ```
 
 ## Use
+
 The application provides a REST API for obtaining information about the user's GitHub repositories.
 
 Retrieving all user repositories:
@@ -39,6 +42,7 @@ Retrieving a specific user repository:
   http://localhost:8080/api/v1/user/{username}/repos/{repoName}
   
 ## Answer
+
 A successful response for all repositories will contain a JSON array with repository information:
 [
     {
@@ -66,6 +70,7 @@ A successful response for a specific repository will contain a JSON object with 
 }
 
 ## Error handling
+
 If the user or repository is not found, the application will return a JSON error:
 {
     "path": "/api/v1/user/{username}/repos",
