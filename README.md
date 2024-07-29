@@ -11,9 +11,13 @@ The application provides information about all unfinished user repositories, as 
 
 ## Installation
 1. Clone the repository:
+   ```sh
    git clone https://github.com/LeonidGolysh/GitHub-Api.git
-2. Configure your GitHub Personal Access Token in the 'application.properties' file:
+   ```
+3. Configure your GitHub Personal Access Token in the 'application.properties' file:
+   ```properties
    github.token=your_personal_access_token
+   ```
 
 ## Use
 The application provides a REST API for obtaining information about the user's GitHub repositories.
