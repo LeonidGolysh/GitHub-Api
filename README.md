@@ -38,14 +38,15 @@ Retrieving a specific user repository:
 * **URL:** /api/v1/user/{username}/repos/{repoName}
 * **Method:** GET
 * **Path options:**
-  * 'username' - GitHub username
-  * 'repoName' - repository name
+  * `username` - GitHub username
+  * `repoName` - repository name
 * **Example of a query:**
 > http://localhost:8080/api/v1/user/{username}/repos/{repoName}
   
 ## Answer
 
 A successful response for all repositories will contain a JSON array with repository information:
+```
 [
     {
         "repoName": "repository-name",
@@ -58,8 +59,10 @@ A successful response for all repositories will contain a JSON array with reposi
         ]
     }
 ]
+```
 
 A successful response for a specific repository will contain a JSON object with repository information:
+```
 {
     "repoName": "repository-name",
     "ownerLogin": "owner-login",
@@ -70,10 +73,12 @@ A successful response for a specific repository will contain a JSON object with 
         }
     ]
 }
+```
 
 ## Error handling
 
 If the user or repository is not found, the application will return a JSON error:
+```
 {
     "path": "/api/v1/user/{username}/repos",
     "error": "User Not Found",
@@ -81,7 +86,9 @@ If the user or repository is not found, the application will return a JSON error
     "timestamp": "2024-07-29T14:08:52.2796638",
     "status": 404
 }
+```
 or
+```
 {
     "path": "/api/v1/user/{username}/repos/{repoName}",
     "error": "Repository Not Found",
@@ -89,3 +96,4 @@ or
     "timestamp": "2024-07-29T14:09:50.4440481",
     "status": 404
 }
+```
