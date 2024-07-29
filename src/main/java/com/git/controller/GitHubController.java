@@ -24,7 +24,7 @@ public class GitHubController {
             return ResponseEntity.ok(repositories);
     }
 
-    @GetMapping("user/{username}/repos/{repoName}")
+    @GetMapping("/user/{username}/repos/{repoName}")
     public ResponseEntity<GitRepository> getUserSpecificRepo(@PathVariable String username, @PathVariable String repoName) {
         GitRepository repository = gitHubService.getUserSpecificRepo(username, repoName);
         return  ResponseEntity.ok(repository);

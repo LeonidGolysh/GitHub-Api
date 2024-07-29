@@ -37,13 +37,13 @@ public class GitHubServiceImpl implements GitHubService {
     //================================User repositories==========================================
 
     private JsonNode fetchUserRepos(String username) {
-        String url = GH_API_URL + "/user/" + username + "/repos";
+        String url = GH_API_URL + "/users/" + username + "/repos";
         try {
             return restTemplateConfig.restTemplate().getForObject(url, JsonNode.class);
         } catch (HttpClientErrorException e) {
 
             if (e.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
-                throw new UserNotFoundException("User not found");
+                throw new UserNotFoundException("User not found, please check your username");
             } else {
                 throw new RuntimeException("An error occurred: " + e.getMessage());
             }
@@ -52,7 +52,7 @@ public class GitHubServiceImpl implements GitHubService {
 
     private List<GitRepository> parseRepos(JsonNode response) {
         if (response == null) {
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException("User not found, please check your username");
         }
 
         List<GitRepository> repositories = new ArrayList<>();
@@ -79,7 +79,7 @@ public class GitHubServiceImpl implements GitHubService {
         } catch (HttpClientErrorException e) {
 
             if (e.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
-                throw new RepositoryNotFoundException("Repository not found");
+                throw new RepositoryNotFoundException("Repository not found, please check the name of the repository");
             } else {
                 throw new RuntimeException("An error occurred: " + e.getMessage());
             }
@@ -88,7 +88,7 @@ public class GitHubServiceImpl implements GitHubService {
 
     private List<Branch> parsBranch(JsonNode response) {
         if (response == null) {
-            throw new RepositoryNotFoundException("Repository not found");
+            throw new RepositoryNotFoundException("Repository not found, please check the name of the repository");
         }
 
         List<Branch> branches = new ArrayList<>();
@@ -110,7 +110,7 @@ public class GitHubServiceImpl implements GitHubService {
         } catch (HttpClientErrorException e) {
 
             if (e.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
-                throw new RepositoryNotFoundException("Repository not found");
+                throw new RepositoryNotFoundException("Repository not found, please check the name of the repository");
             } else {
                 throw new RuntimeException("An error occurred: " + e.getMessage());
             }
