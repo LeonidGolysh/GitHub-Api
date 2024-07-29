@@ -29,7 +29,7 @@ Retrieving all user repositories:
 
 * URL: /api/v1/user/{username}/repos
 * Method: GET
-* Path Options: username - GitHub username
+* ``Path Options: `username` - GitHub username``
 * Example of a query:
 > http://localhost:8080/api/v1/user/{username}/repos
 
