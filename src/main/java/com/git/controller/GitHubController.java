@@ -1,6 +1,5 @@
 package com.git.controller;
 
-import com.git.model.ErrorResponse;
 import com.git.model.GitRepository;
 import com.git.service.GitHubService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/repos")
+@RequestMapping("/api/v1")
 public class GitHubController {
 
     @Autowired
     private GitHubService gitHubService;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getUserRepos(@PathVariable String username) {
-        try {
+    @GetMapping("/user/{username}/repos")
+    public ResponseEntity<List<GitRepository>> getUserRepos(@PathVariable String username) {
             List<GitRepository> repositories = gitHubService.getUserRepo(username);
             return ResponseEntity.ok(repositories);
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(new ErrorResponse(404, e.getMessage()));
-        }
+    }
+
+    @GetMapping("user/{username}/repos/{repoName}")
+    public ResponseEntity<GitRepository> getUserSpecificRepo(@PathVariable String username, @PathVariable String repoName) {
+        GitRepository repository = gitHubService.getUserSpecificRepo(username, repoName);
+        return  ResponseEntity.ok(repository);
     }
 }
