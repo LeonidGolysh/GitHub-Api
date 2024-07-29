@@ -27,20 +27,20 @@ The application provides a REST API for obtaining information about the user's G
 
 Retrieving all user repositories:
 
-* URL: /api/v1/user/{username}/repos
-* Method: GET
-* ``Path Options: `username` - GitHub username``
-* Example of a query:
+* **URL:** /api/v1/user/{username}/repos
+* **Method:** GET
+* **Path Options:** `username` - GitHub username
+* **Example of a query:**
 > http://localhost:8080/api/v1/user/{username}/repos
 
 Retrieving a specific user repository:
 
-> - URL: /api/v1/user/{username}/repos/{repoName}
-> - Method: GET
-> - Path options:
->  username - GitHub username
->  repoName - repository name
-> - Example of a query:
+* **URL:** /api/v1/user/{username}/repos/{repoName}
+* **Method:** GET
+* **Path options:**
+  * 'username' - GitHub username
+  * 'repoName' - repository name
+* **Example of a query:**
 > http://localhost:8080/api/v1/user/{username}/repos/{repoName}
   
 ## Answer
